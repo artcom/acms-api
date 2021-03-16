@@ -1,4 +1,4 @@
-# Git JSON API
+# ACMS API
 
 A JSON API to serve the contents of JSON files from a Git repo. All files in the repo are expected to be JSON files with a `.json` extension.
 
@@ -11,13 +11,13 @@ The service uses the following environment variables:
 * `REPO_URI` _(required)_ URI of the Git repository
 * `SIGNATURE_MAIL` _(optional)_ E-mail address used for generated commits
 * `REPO_TOKEN` _(optional)_ Token for accessing private repo
-* `GIT_JSON_API_VAR_*`_(optional)_ A list of variables to be replaced in the content (see "Variable Replacement" for details)
+* `ACMS_API_VAR_*`_(optional)_ A list of variables to be replaced in the content (see "Variable Replacement" for details)
 
 ### Variable Replacement
 
-The service replaces variables in files when serving and writing. All variables need to be environment variables prefixed with `GIT_JSON_API_VAR_`. Example:
+The service replaces variables in files when serving and writing. All variables need to be environment variables prefixed with `ACMS_API_VAR_`. Example:
 ```
-export GIT_JSON_API_VAR_MY_FANCY_VARIABLE="value"
+export ACMS_API_VAR_MY_FANCY_VARIABLE="value"
 ```
 
 If a variable occurs in the content it will be replaced by the given value. When writing to the repo values will also be replaced by their variable name.
@@ -25,7 +25,7 @@ If a variable occurs in the content it will be replaced by the given value. When
 **Example**
 ```
 Content:                          "Hello ${properGreeting}."  
-GIT_JSON_API_VAR_PROPER_GREETING: "World"  
+ACMS_API_VAR_PROPER_GREETING:     "World"  
 Served:                           "Hello World."
 ````
 
@@ -119,7 +119,7 @@ Additional properties are:
 
 ## Development Setup
 
-```bahs
+```bash
 npm install
 REPO_URI=<repo-url> npm run watch
 ```

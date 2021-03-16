@@ -11,7 +11,7 @@ async function main() {
   app.use(compression())
 
   const log = Logger.createLogger({
-    name: "git-json-api",
+    name: "acms-api",
     level: "debug",
     serializers: { error: Logger.stdSerializers.err }
   })

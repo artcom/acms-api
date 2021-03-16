@@ -1,7 +1,7 @@
 {
-  "name": "git-json-api",
+  "name": "acms-api",
   "version": "3.2.2",
-  "repository": "artcom/git-json-api",
+  "repository": "artcom/acms-api",
   "license": "MIT",
   "scripts": {
     "lint": "eslint src test",
