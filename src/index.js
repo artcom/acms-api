@@ -31,7 +31,11 @@ async function main() {
   log.info("Repository cloned")
 
   app.use(express.text({ type: "application/json", limit: process.env.BODY_SIZE_LIMIT || "1mb" }))
-  app.use(cors({ exposedHeaders: ["Git-Commit-Hash"] }))
+
+  if(process.env.SET_CORS_HEADERS==="true") {
+    app.use(cors({ exposedHeaders: ["Git-Commit-Hash"] }))
+  }
+
   app.set("trust proxy", true)
   app.use("/", routes(repo, log))
 
