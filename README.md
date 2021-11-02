@@ -41,7 +41,7 @@ The returned object contains the contents of every file in the root of the repo 
 
 If a repo contains `file1.json`, `file2.json`, `directory/fileA.json` and `directory/subDirectory/fileB.json`, the response would be structured as follows:
 
-```json
+```json5
 // GET <url>/master
 {
   "directory" : {
@@ -70,7 +70,7 @@ If a repo contains `file1.json`, `file2.json`, `directory/fileA.json` and `direc
 
 Optionally, the previous route can be called with an additional path into the content to retrieve specific data.
 
-```json
+```json5
 // GET <url>/master/directory/fileA
 {
   "foo": "bar"
@@ -87,7 +87,7 @@ A new Git commit will be created and merged if necessary. The response will cont
 
 The body to replace everything inside directory looks like this:
 
-```json
+```json5
 // PUT <url>/master/directory
 {
   "files": {
@@ -103,7 +103,7 @@ The body to replace everything inside directory looks like this:
 ```
 
 The body to replace a single file only looks like this:
-```json
+```json5
 // PUT <url>/master/file1
 {
   "fileContent" : {
