@@ -120,8 +120,6 @@ describe("replace Data", () => {
   })
 
   test("return merge conflict error", async () => {
-    expect.assertions(1)
-
     const files1 = {
       "rootFile": { foo: "change1" },
       "dir/nestedFile1": { foo: "bar" }
@@ -133,10 +131,8 @@ describe("replace Data", () => {
       "dir/nestedFile1": { foo: "bar" }
     }
 
-    return repo.replaceDirectory(masterCommitHash, "master", "", "test", files2)
-      .catch(e => {
-        expect(e.message).toBe(
-          `Merge conflict
+    return expect(repo.replaceDirectory(masterCommitHash, "master", "", "test", files2))
+      .rejects.toThrow(`Merge conflict
 
 rootFile.json
 
@@ -147,7 +143,6 @@ rootFile.json
   "foo": "change2"
 >>>>>>> theirs
 }`)
-      })
   })
 
   test("replace files on master parent with undefined update branch", async () => {
@@ -164,16 +159,12 @@ rootFile.json
   })
 
   test("return error for commit hash parent with undefined update branch", async () => {
-    expect.assertions(1)
-
     const files = {
       "rootFile": { foo: "change1" },
       "dir/nestedFile1": { foo: "bar" }
     }
 
-    return repo.replaceDirectory(masterCommitHash, undefined, "", "test", files)
-      .catch(e => {
-        expect(e.message).toBe("Invalid or missing update branch")
-      })
+    return expect(repo.replaceDirectory(masterCommitHash, undefined, "", "test", files))
+      .rejects.toThrow("Invalid or missing update branch")
   })
 })
