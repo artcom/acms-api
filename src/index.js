@@ -32,7 +32,7 @@ async function main() {
 
   app.use(express.text({ type: "application/json", limit: process.env.BODY_SIZE_LIMIT || "1mb" }))
 
-  if(process.env.SET_CORS_HEADERS==="true") {
+  if (process.env.SET_CORS_HEADERS === "true") {
     app.use(cors({ exposedHeaders: ["Git-Commit-Hash"] }))
   }
 
