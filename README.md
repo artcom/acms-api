@@ -117,6 +117,34 @@ Additional properties are:
 `author`: Will be used as commit author.  
 `updateBranch`: The branch which should be updated to the new commit (default: "master").
 
+### `DELETE /:version/path`
+
+A directory or a single file can be deleted using a PUT request. The body is expected to contain JSON data containing a `file`or `directory` property.
+
+A new Git commit will be created and merged if necessary. The response will contain the hash of the new (merge) commit in the `Git-Commit-Hash` header. If the merge fails, an error will be returned.
+
+#### Examples
+
+Delete single file:
+```json
+// DELETE <url>/master/parent/directory
+{
+  "file": "myFile"
+}
+```
+
+Delete a directory:
+```json
+// DELETE <url>/master/parent/directory
+{
+  "directory": "myDirectory"
+}
+```
+
+Additional properties are:  
+`author`: Will be used as commit author.  
+`updateBranch`: The branch which should be updated to the new commit (default: "master").
+
 ## Development Setup
 
 ```bash

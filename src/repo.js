@@ -77,7 +77,7 @@ module.exports = class Repo {
   }
 
   async replaceDirectory(parentVersion, updateBranch, path, author, files) {
-    return this.replace(parentVersion, updateBranch, path, author, () => {
+    return this.change(parentVersion, updateBranch, path, author, () => {
       // clear directory first
       rimraf.sync(`${this.repo.workdir()}${path}/*`)
 
@@ -88,12 +88,24 @@ module.exports = class Repo {
   }
 
   async replaceFile(parentVersion, updateBranch, path, author, content) {
-    return this.replace(parentVersion, updateBranch, path, author, () =>
+    return this.change(parentVersion, updateBranch, path, author, () =>
       fse.outputJsonSync(`${this.repo.workdir()}${path}.json`, content, { spaces: 2 })
     )
   }
 
-  async replace(parentVersion, updateBranch, path, author, replaceFunc) {
+  async deleteFile(parentVersion, updateBranch, path, author, file) {
+    return this.change(parentVersion, updateBranch, path, author, () =>
+      rimraf.sync(`${this.repo.workdir()}${path}/${file}.json`)
+    )
+  }
+
+  async deleteDirectory(parentVersion, updateBranch, path, author, directory) {
+    return this.change(parentVersion, updateBranch, path, author, () =>
+      rimraf.sync(`${this.repo.workdir()}${path}/${directory}`)
+    )
+  }
+
+  async change(parentVersion, updateBranch, path, author, changeFunc) {
     try {
       await this.lock.lock()
 
@@ -106,7 +118,7 @@ module.exports = class Repo {
       const branchCommit = await getCommitForUpdateBranch(this.repo, updateBranch || parentVersion)
 
       await checkoutCommit(this.repo, parentCommit)
-      await replaceFunc()
+      await changeFunc()
 
       const opts = new Git.DiffOptions()
       opts.flags |= Git.Diff.OPTION.INCLUDE_UNTRACKED

@@ -9,6 +9,8 @@ module.exports = function routes(repo, log) {
     .get("/:version/*", getData)
     .put("/:parentVersion", putData)
     .put("/:parentVersion/*", putData)
+    .delete("/:parentVersion", deleteData)
+    .delete("/:parentVersion/*", deleteData)
 
   async function getData({ ip, params, query }, response) {
     const listFiles = query.listFiles === "true"
@@ -59,6 +61,48 @@ module.exports = function routes(repo, log) {
           )
         } else {
           throw new Error("Missing 'files' or 'fileContent'")
+        }
+      }
+
+      response.setHeader("Git-Commit-Hash", commitHash)
+      response.end()
+    } catch (error) {
+      log.error({ error })
+      response.status(500).json({ error: error.message })
+    }
+  }
+
+  async function deleteData({ body, ip, params }, response) {
+    try {
+      const providedPath = params[0] || ""
+      const parentVersion = params.parentVersion
+
+      const { author: providedAuthor, directory, file, updateBranch = "master" } =
+        JSON.parse(body)
+
+      log.info(
+        { providedAuthor, ip, parentVersion, providedPath, updateBranch },
+        "Delete request received"
+      )
+
+      const { dir, base } = Path.parse(providedPath)
+      const path = Path.join(dir, base)
+      const author = `${providedAuthor || "Request"} from ${ip}`
+
+      let commitHash
+      if (file) {
+        commitHash = await repo.deleteFile(parentVersion, updateBranch, path, author, file)
+      } else {
+        if (directory) {
+          commitHash = await repo.deleteDirectory(
+            parentVersion,
+            updateBranch,
+            path,
+            author,
+            directory
+          )
+        } else {
+          throw new Error("Missing 'file' or 'directory'")
         }
       }
 
