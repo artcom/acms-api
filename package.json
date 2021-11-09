@@ -13,7 +13,7 @@
     "debug": "node --inspect-brk src/index.js"
   },
   "engines": {
-    "node": "14.17.5"
+    "node": "14.18.1"
   },
   "dependencies": {
     "bunyan": "^1.8.15",
@@ -27,7 +27,6 @@
     "lodash.isplainobject": "^4.0.6",
     "lodash.isundefined": "^3.0.1",
     "lodash.mapkeys": "^4.6.0",
-    "lodash.mapvalues": "^4.6.0",
     "lodash.pickby": "^4.6.0",
     "lodash.set": "^4.3.2",
     "minimatch": "^3.0.4",
@@ -35,12 +34,12 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-artcom": "^0.11.0",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^24.4.0",
-    "jest": "^27.0.6",
-    "nodemon": "^2.0.12",
+    "eslint": "^8.2.0",
+    "eslint-config-artcom": "^0.11.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "^25.2.4",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.14",
     "tmp": "^0.2.1"
   }
 }
