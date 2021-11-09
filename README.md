@@ -126,7 +126,7 @@ A new Git commit will be created and merged if necessary. The response will cont
 #### Examples
 
 Delete single file:
-```json
+```json5
 // DELETE <url>/master/parent/directory
 {
   "file": "myFile"
@@ -134,7 +134,7 @@ Delete single file:
 ```
 
 Delete a directory:
-```json
+```json5
 // DELETE <url>/master/parent/directory
 {
   "directory": "myDirectory"
