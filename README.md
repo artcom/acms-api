@@ -119,7 +119,7 @@ Additional properties are:
 
 ### `DELETE /:version/path`
 
-A directory or a single file can be deleted using a DELETE request. The body is expected to contain JSON data containing a `file`or `directory` property.
+A directory or a single file can be deleted using a DELETE request. The body is expected to contain JSON data containing a `file` or `directory` property.
 
 A new Git commit will be created and merged if necessary. The response will contain the hash of the new (merge) commit in the `Git-Commit-Hash` header. If the merge fails, an error will be returned.
 
@@ -127,17 +127,17 @@ A new Git commit will be created and merged if necessary. The response will cont
 
 Delete single file:
 ```json5
-// DELETE <url>/master/parent/directory
+// DELETE <url>/master/parentDirectory
 {
-  "file": "myFile"
+  "file": "fileToDelete"
 }
 ```
 
 Delete a directory:
 ```json5
-// DELETE <url>/master/parent/directory
+// DELETE <url>/master/parentDirectory
 {
-  "directory": "myDirectory"
+  "directory": "directoryToDelete"
 }
 ```
 
