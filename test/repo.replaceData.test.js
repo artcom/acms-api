@@ -131,8 +131,9 @@ describe("replace Data", () => {
       "dir/nestedFile1": { foo: "bar" }
     }
 
-    return expect(repo.replaceDirectory(masterCommitHash, "master", "", "test", files2))
-      .rejects.toThrow(`Merge conflict
+    const error = await repo.replaceDirectory(masterCommitHash, "master", "", "test", files2)
+      .catch(e => e)
+    expect(error.message).toBe(`Merge conflict
 
 rootFile.json
 
@@ -164,7 +165,8 @@ rootFile.json
       "dir/nestedFile1": { foo: "bar" }
     }
 
-    return expect(repo.replaceDirectory(masterCommitHash, undefined, "", "test", files))
-      .rejects.toThrow("Invalid or missing update branch")
+    const error = await repo.replaceDirectory(masterCommitHash, undefined, "", "test", files)
+      .catch(e => e)
+    expect(error.message).toBe("Invalid or missing update branch")
   })
 })

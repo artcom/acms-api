@@ -179,19 +179,15 @@ describe("Get Data", () => {
       })
     })
 
-    test("returns error with status 404 for non-existing entry", () =>
-      expect(repo.getData("master", "doesnotexist", false)).rejects.toThrow(
-        expect.objectContaining({
-          message: "Not found",
-          httpCode: 404
-        })
-      )
-    )
+    test("returns error with status 404 for non-existing entry", async () => {
+      const error = await repo.getData("master", "doesnotexist", false).catch(e => e)
+      expect(error.message).toBe("Not found")
+      expect(error.httpCode).toBe(404)
+    })
 
-    test("returns error for invalid branch", () => {
-      expect.assertions(1)
-      return expect(repo.getData("invalid", "", false))
-        .rejects.toThrow("Branch or commit not found: 'invalid'")
+    test("returns error for invalid branch", async () => {
+      const error = await repo.getData("invalid", "", false).catch(e => e)
+      expect(error.message).toBe("Branch or commit not found: 'invalid'")
     })
   })
 
@@ -249,23 +245,17 @@ describe("Get Data", () => {
       })
     })
 
-    test("returns error with status 404 for file query", async () =>
-      expect(repo.getData("master", "rootFile", true)).rejects.toThrow(
-        expect.objectContaining({
-          message: "Not found",
-          httpCode: 404
-        })
-      )
-    )
+    test("returns error with status 404 for file query", async () => {
+      const error = await repo.getData("master", "rootFile", true).catch(e => e)
+      expect(error.message).toBe("Not found")
+      expect(error.httpCode).toBe(404)
+    })
 
-    test("returns error with status 404 for non-existing directory", () =>
-      expect(repo.getData("master", "doesnotexist", true)).rejects.toThrow(
-        expect.objectContaining({
-          message: "Not found",
-          httpCode: 404
-        })
-      )
-    )
+    test("returns error with status 404 for non-existing directory", async () => {
+      const error = await repo.getData("master", "doesnotexist", true).catch(e => e)
+      expect(error.message).toBe("Not found")
+      expect(error.httpCode).toBe(404)
+    })
 
     test("returns files for directory query", async () => {
       const { commitHash, data } = await repo.getData("master", "dir", true)
