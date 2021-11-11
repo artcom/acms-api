@@ -1,6 +1,6 @@
 {
   "name": "acms-api",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "repository": "artcom/acms-api",
   "license": "MIT",
   "scripts": {
