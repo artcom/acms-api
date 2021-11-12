@@ -77,6 +77,22 @@ Optionally, the previous route can be called with an additional path into the co
 }
 ```
 
+### `GET /:version/path?listFiles=true`
+
+The `listFiles` parameter returns a flat structure with every file in `path` and in subdirectories where the file path is the key` and the file content the `value`.
+
+```json5
+// GET <url>/master/directory?listFiles
+{
+  "file1": 
+   {
+      "foo": "bar"
+   },
+   "file2": [1, 2, 3],
+   "subDirectory/file3": "foo"
+}
+```
+
 ### `PUT /:version/path`
 
 The content of a directory or single file can be replaced using a PUT request. The body is expected to contain JSON data for all files and subdirectories or a file. The intended workflow is to query a path using `GET /:version/path`, make the desired changes to the data and send the whole data back via `PUT /:parentVersion/path`.
