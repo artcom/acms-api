@@ -79,7 +79,7 @@ Optionally, the previous route can be called with an additional path into the co
 
 ### `GET /:version/path?listFiles=true`
 
-The `listFiles` parameter returns a flat structure with every file in `path` and in subdirectories where the file path is the key` and the file content the `value`.
+The `listFiles` parameter returns a flat structure with every file in `path` and in subdirectories where the file path is the `key` and the file content the `value`.
 
 ```json5
 // GET <url>/master/directory?listFiles
