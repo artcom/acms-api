@@ -19,14 +19,15 @@ module.exports = class Repo {
     this.needsFetch = true
 
     const isMacos = process.platform === "darwin"
-    const callbacks = isMacos ? {
-      certificateCheck: () => 0
-    } : {}
+    const callbacks = isMacos
+      ? {
+          certificateCheck: () => 0,
+        }
+      : {}
 
     if (process.env.REPO_TOKEN) {
-      callbacks.credentials = () => Git.Cred.userpassPlaintextNew(
-        process.env.REPO_TOKEN,
-        "x-oauth-basic")
+      callbacks.credentials = () =>
+        Git.Cred.userpassPlaintextNew(process.env.REPO_TOKEN, "x-oauth-basic")
     }
     this.fetchOpts = { callbacks }
   }
@@ -54,11 +55,13 @@ module.exports = class Repo {
       if (this.needsFetch) {
         await this.repo.fetch("origin", {
           prune: Git.Fetch.PRUNE.GIT_FETCH_PRUNE,
-          callbacks: this.fetchOpts.callbacks
+          callbacks: this.fetchOpts.callbacks,
         })
 
         this.needsFetch = false
-        setTimeout(() => { this.needsFetch = true }, NEEDS_FETCH_TIMEOUT)
+        setTimeout(() => {
+          this.needsFetch = true
+        }, NEEDS_FETCH_TIMEOUT)
       }
 
       const commit = await getCommitByVersion(this.repo, version)
@@ -68,7 +71,7 @@ module.exports = class Repo {
 
       return {
         commitHash: this.cache.getCommitHash(),
-        data: listFiles ? this.cache.getFiles(path) : this.cache.getObject(path)
+        data: listFiles ? this.cache.getFiles(path) : this.cache.getObject(path),
       }
     } catch (error) {
       this.lock.unlock()
@@ -111,7 +114,7 @@ module.exports = class Repo {
 
       await this.repo.fetch("origin", {
         prune: Git.Fetch.PRUNE.GIT_FETCH_PRUNE,
-        callbacks: this.fetchOpts.callbacks
+        callbacks: this.fetchOpts.callbacks,
       })
 
       const parentCommit = await getCommitByVersion(this.repo, parentVersion)
@@ -153,18 +156,22 @@ module.exports = class Repo {
 }
 
 function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time))
+  return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 async function getCommitForUpdateBranch(repo, reference) {
-  return repo.getReferenceCommit(`refs/remotes/origin/${reference}`)
-    .catch(() => { throw new Error("Invalid or missing update branch") })
+  return repo.getReferenceCommit(`refs/remotes/origin/${reference}`).catch(() => {
+    throw new Error("Invalid or missing update branch")
+  })
 }
 
 async function getCommitByVersion(repo, version) {
-  return repo.getReferenceCommit(`refs/remotes/origin/${version}`)
+  return repo
+    .getReferenceCommit(`refs/remotes/origin/${version}`)
     .catch(() => repo.getCommit(version))
-    .catch(() => { throw new Error(`Branch or commit not found: '${version}'`) })
+    .catch(() => {
+      throw new Error(`Branch or commit not found: '${version}'`)
+    })
 }
 
 async function checkoutCommit(repo, commit) {
@@ -173,7 +180,7 @@ async function checkoutCommit(repo, commit) {
     checkoutStrategy:
       Git.Checkout.STRATEGY.FORCE |
       Git.Checkout.STRATEGY.REMOVE_UNTRACKED |
-      Git.Checkout.STRATEGY.REMOVE_IGNORED
+      Git.Checkout.STRATEGY.REMOVE_IGNORED,
   })
 }
 
@@ -248,13 +255,15 @@ async function isAncestor(repo, ancestorCommit, commit) {
 async function createConflictReport(repo, index) {
   await Git.Checkout.index(repo, index)
 
-  return index.entries()
-    .filter(entry => Git.Index.entryIsConflict(entry))
-    .map(entry => entry.path)
+  return index
+    .entries()
+    .filter((entry) => Git.Index.entryIsConflict(entry))
+    .map((entry) => entry.path)
     .filter((path, indexOfPath, self) => self.indexOf(path) === indexOfPath) // unique
-    .map(path => {
+    .map((path) => {
       const content = fse.readFileSync(`${repo.workdir()}${path}`, "utf-8")
       const conflicts = [...content.matchAll(CONFLICT_REGEXP)].map(([conflict]) => conflict)
       return `${path}\n\n${conflicts.join("\n\n")}`
-    }).join("\n\n")
+    })
+    .join("\n\n")
 }

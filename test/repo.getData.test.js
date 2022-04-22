@@ -4,12 +4,12 @@ const { createGitFunctions, createTempDir } = require("./helpers")
 
 const rootFile = {
   foo: "bar",
-  number: { baz: "foo" }
+  number: { baz: "foo" },
 }
 
 const nestedFile1 = {
   foo: "bar",
-  number: 1
+  number: 1,
 }
 
 const nestedFile2 = ["one", "two", "three"]
@@ -48,7 +48,7 @@ describe("Get Data", () => {
     git("branch", "branch2")
     git("checkout", "branch2")
     branch2CommitHash = commit("dir.json", {
-      nestedFile1: "shouldBeOverwrittenByFilesInSubdirectory"
+      nestedFile1: "shouldBeOverwrittenByFilesInSubdirectory",
     })
     git("push", "origin", "branch2")
 
@@ -57,7 +57,7 @@ describe("Get Data", () => {
     git("branch", "branch3")
     git("checkout", "branch3")
     branch3CommitHash = commit("dir/index.json", {
-      indexFile: "indexFileValue"
+      indexFile: "indexFileValue",
     })
     git("push", "origin", "branch3")
   })
@@ -75,15 +75,15 @@ describe("Get Data", () => {
       expect(data).toEqual({
         rootFile: {
           foo: "bar",
-          number: { baz: "foo" }
+          number: { baz: "foo" },
         },
         dir: {
           nestedFile1: {
             foo: "bar",
-            number: 1
+            number: 1,
           },
-          nestedFile2: ["one", "two", "three"]
-        }
+          nestedFile2: ["one", "two", "three"],
+        },
       })
     })
 
@@ -93,7 +93,7 @@ describe("Get Data", () => {
       expect(commitHash).toBe(masterCommitHash)
       expect(data).toEqual({
         foo: "bar",
-        number: { baz: "foo" }
+        number: { baz: "foo" },
       })
     })
 
@@ -103,7 +103,7 @@ describe("Get Data", () => {
       expect(commitHash).toBe(masterCommitHash)
       expect(data).toEqual({
         foo: "bar",
-        number: 1
+        number: 1,
       })
     })
 
@@ -114,9 +114,9 @@ describe("Get Data", () => {
       expect(data).toEqual({
         nestedFile1: {
           foo: "bar",
-          number: 1
+          number: 1,
         },
-        nestedFile2: ["one", "two", "three"]
+        nestedFile2: ["one", "two", "three"],
       })
     })
 
@@ -134,10 +134,10 @@ describe("Get Data", () => {
       expect(data).toEqual({
         nestedFile1: {
           foo: "bar",
-          number: 1
+          number: 1,
         },
         nestedFile2: ["one", "two", "three"],
-        indexFile: "indexFileValue"
+        indexFile: "indexFileValue",
       })
     })
 
@@ -148,14 +148,14 @@ describe("Get Data", () => {
       expect(data).toEqual({
         rootFile: {
           foo: "bar",
-          number: { baz: "foo" }
+          number: { baz: "foo" },
         },
         dir: {
           nestedFile1: {
             foo: "bar",
-            number: 1
-          }
-        }
+            number: 1,
+          },
+        },
       })
     })
 
@@ -173,20 +173,20 @@ describe("Get Data", () => {
       expect(data).toEqual({
         nestedFile1: {
           foo: "bar",
-          number: 1
+          number: 1,
         },
-        nestedFile2: ["one", "two", "three"]
+        nestedFile2: ["one", "two", "three"],
       })
     })
 
     test("returns error with status 404 for non-existing entry", async () => {
-      const error = await repo.getData("master", "doesnotexist", false).catch(e => e)
+      const error = await repo.getData("master", "doesnotexist", false).catch((e) => e)
       expect(error.message).toBe("Not found")
       expect(error.httpCode).toBe(404)
     })
 
     test("returns error for invalid branch", async () => {
-      const error = await repo.getData("invalid", "", false).catch(e => e)
+      const error = await repo.getData("invalid", "", false).catch((e) => e)
       expect(error.message).toBe("Branch or commit not found: 'invalid'")
     })
   })
@@ -197,15 +197,15 @@ describe("Get Data", () => {
 
       expect(commitHash).toBe(masterCommitHash)
       expect(data).toEqual({
-        "rootFile": {
+        rootFile: {
           foo: "bar",
-          number: { baz: "foo" }
+          number: { baz: "foo" },
         },
         "dir/nestedFile1": {
           foo: "bar",
-          number: 1
+          number: 1,
         },
-        "dir/nestedFile2": ["one", "two", "three"]
+        "dir/nestedFile2": ["one", "two", "three"],
       })
     })
 
@@ -214,18 +214,18 @@ describe("Get Data", () => {
 
       expect(commitHash).toBe(branch3CommitHash)
       expect(data).toEqual({
-        "rootFile": {
+        rootFile: {
           foo: "bar",
-          number: { baz: "foo" }
+          number: { baz: "foo" },
         },
         "dir/index": {
           indexFile: "indexFileValue",
         },
         "dir/nestedFile1": {
           foo: "bar",
-          number: 1
+          number: 1,
         },
-        "dir/nestedFile2": ["one", "two", "three"]
+        "dir/nestedFile2": ["one", "two", "three"],
       })
     })
 
@@ -234,25 +234,25 @@ describe("Get Data", () => {
 
       expect(commitHash).toBe(oldCommitHash)
       expect(data).toEqual({
-        "rootFile": {
+        rootFile: {
           foo: "bar",
-          number: { baz: "foo" }
+          number: { baz: "foo" },
         },
         "dir/nestedFile1": {
           foo: "bar",
-          number: 1
-        }
+          number: 1,
+        },
       })
     })
 
     test("returns error with status 404 for file query", async () => {
-      const error = await repo.getData("master", "rootFile", true).catch(e => e)
+      const error = await repo.getData("master", "rootFile", true).catch((e) => e)
       expect(error.message).toBe("Not found")
       expect(error.httpCode).toBe(404)
     })
 
     test("returns error with status 404 for non-existing directory", async () => {
-      const error = await repo.getData("master", "doesnotexist", true).catch(e => e)
+      const error = await repo.getData("master", "doesnotexist", true).catch((e) => e)
       expect(error.message).toBe("Not found")
       expect(error.httpCode).toBe(404)
     })
@@ -264,9 +264,9 @@ describe("Get Data", () => {
       expect(data).toEqual({
         nestedFile1: {
           foo: "bar",
-          number: 1
+          number: 1,
         },
-        nestedFile2: ["one", "two", "three"]
+        nestedFile2: ["one", "two", "three"],
       })
     })
   })

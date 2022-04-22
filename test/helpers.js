@@ -6,11 +6,9 @@ module.exports.createTempDir = () => tmp.dirSync().name
 
 module.exports.copyAll = (fromDir, toDir) => fse.copy(fromDir, toDir)
 
-module.exports.createGitFunctions = workingRepoDir => {
+module.exports.createGitFunctions = (workingRepoDir) => {
   function git(...args) {
-    return execFileSync("git", args, { cwd: workingRepoDir, stdio: "pipe" })
-      .toString()
-      .trim()
+    return execFileSync("git", args, { cwd: workingRepoDir, stdio: "pipe" }).toString().trim()
   }
 
   function commit(filePath, content) {

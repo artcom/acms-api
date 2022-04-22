@@ -6,7 +6,6 @@ describe("Delete Data", () => {
   let repo
   let originRepoDir
 
-
   beforeAll(async () => {
     originRepoDir = createTempDir() // bare origin repo
     const helperRepoDir = createTempDir() // used to push test data into the bare origin repo
@@ -17,7 +16,7 @@ describe("Delete Data", () => {
     git("init", "--bare", originRepoDir)
     git("clone", originRepoDir, helperRepoDir)
 
-    commit("rootFile.json", { foo: "bar", })
+    commit("rootFile.json", { foo: "bar" })
     commit("dir/nestedFile1.json", { foo: "bar" })
     git("push", "origin", "master")
   })

@@ -33,14 +33,15 @@ module.exports = class Cache {
     const tree = await commit.getTree()
     return new Promise((resolve, reject) => {
       const files = []
-      tree.walk(true)
-        .on("entry", entry => {
+      tree
+        .walk(true)
+        .on("entry", (entry) => {
           if (entry.isFile() && entry.name().endsWith(".json")) {
             files.push(entry)
           }
         })
         .on("end", () => resolve(files))
-        .on("error", error => reject(error))
+        .on("error", (error) => reject(error))
         .start()
     })
   }

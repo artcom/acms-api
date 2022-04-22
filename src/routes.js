@@ -35,8 +35,12 @@ module.exports = function routes(repo, log) {
       const providedPath = params[0] || ""
       const parentVersion = params.parentVersion
 
-      const { author: providedAuthor, fileContent, files, updateBranch = "master" } =
-        JSON.parse(replaceValuesWithVariables(body))
+      const {
+        author: providedAuthor,
+        fileContent,
+        files,
+        updateBranch = "master",
+      } = JSON.parse(replaceValuesWithVariables(body))
 
       log.info(
         { providedAuthor, ip, parentVersion, providedPath, updateBranch },
@@ -77,8 +81,7 @@ module.exports = function routes(repo, log) {
       const providedPath = params[0] || ""
       const parentVersion = params.parentVersion
 
-      const { author: providedAuthor, directory, file, updateBranch = "master" } =
-        JSON.parse(body)
+      const { author: providedAuthor, directory, file, updateBranch = "master" } = JSON.parse(body)
 
       log.info(
         { providedAuthor, ip, parentVersion, providedPath, updateBranch },

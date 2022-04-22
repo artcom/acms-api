@@ -13,7 +13,7 @@ async function main() {
   const log = Logger.createLogger({
     name: "acms-api",
     level: "debug",
-    serializers: { error: Logger.stdSerializers.err }
+    serializers: { error: Logger.stdSerializers.err },
   })
   const port = process.env.PORT || 3000
   const repoUri = process.env.REPO_URI
