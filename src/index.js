@@ -1,20 +1,16 @@
-const Logger = require("bunyan")
+const { createLogger } = require("@artcom/logger")
 const cors = require("cors")
 const express = require("express")
 const compression = require("compression")
 
 const Repo = require("./repo")
 const routes = require("./routes")
+const log = createLogger()
 
 async function main() {
   const app = express()
   app.use(compression())
 
-  const log = Logger.createLogger({
-    name: "acms-api",
-    level: "debug",
-    serializers: { error: Logger.stdSerializers.err },
-  })
   const port = process.env.PORT || 3000
   const repoUri = process.env.REPO_URI
 
@@ -25,7 +21,7 @@ async function main() {
 
   const repo = new Repo(repoUri, "./.repo")
 
-  log.info({ repoUri: process.env.REPO_URI }, "Try to clone repository...")
+  log.info("Try to clone repository...", { repoUri: process.env.REPO_URI })
 
   await repo.init(log)
   log.info("Repository cloned")
@@ -40,7 +36,7 @@ async function main() {
   app.use("/", routes(repo, log))
 
   app.listen(port, () => {
-    log.info({ port }, "Up and running")
+    log.info("Up and running", { port })
   })
 }
 

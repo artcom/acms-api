@@ -17,7 +17,7 @@ module.exports = function routes(repo, log) {
     const path = params[0] || ""
     const version = params.version
 
-    log.info({ ip, version, path, listFiles }, "Get request received")
+    log.info("Get request received", { ip, version, path, listFiles })
 
     try {
       const { commitHash, data } = await repo.getData(version, path, listFiles)
