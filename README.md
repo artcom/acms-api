@@ -177,3 +177,6 @@ The service is designed to be deployed using [Dokku](http://dokku.viewdocs.io/do
 ### Dockerfile
 
 The service contains a Dockerfile to start it directly with Docker.
+
+## Troubleshooting
+On Mac OS if you encounter this error: `error: no template named 'remove_cv_t' in namespace 'std'; did you mean 'remove_cv'?` when running `npm install` with node 16 try: `export CXXFLAGS="--std=c++17" && npm install` (see this node-gyp [issue](https://github.com/nodejs/node-gyp/issues/2387)).
