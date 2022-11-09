@@ -14,7 +14,7 @@
     "debug": "node --inspect-brk src/index.js"
   },
   "engines": {
-    "node": "16.17.0"
+    "node": "~18.12"
   },
   "dependencies": {
     "@artcom/logger": "^1.5.1",

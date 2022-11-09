@@ -1,4 +1,4 @@
-FROM node:16.17-bullseye-slim AS builder
+FROM node:18.12-bullseye-slim AS builder
 
 ARG JOBS=max
 
@@ -7,7 +7,7 @@ COPY . /app
 WORKDIR /app
 RUN npm install --production
 
-FROM node:16.17-bullseye-slim
+FROM node:18.12-bullseye-slim
 COPY --from=builder /app /app
 WORKDIR /app
 CMD ["npm", "start"]
