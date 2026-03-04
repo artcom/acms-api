@@ -5,12 +5,17 @@ const { replaceValuesWithVariables } = require("./variables")
 
 module.exports = function routes(repo, log) {
   return new express.Router()
+    .get("/.health", getHealth)
     .get("/:version", getData)
     .get("/:version/*", getData)
     .put("/:parentVersion", putData)
     .put("/:parentVersion/*", putData)
     .delete("/:parentVersion", deleteData)
     .delete("/:parentVersion/*", deleteData)
+
+  async function getHealth(request, response) {
+    response.sendStatus(200)
+  }
 
   async function getData({ ip, params, query }, response) {
     const listFiles = query.listFiles === "true"
