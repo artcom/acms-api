@@ -49,7 +49,7 @@ module.exports = function routes(repo, log) {
 
       log.info(
         { providedAuthor, ip, parentVersion, providedPath, updateBranch },
-        "Put request received"
+        "Put request received",
       )
 
       const { dir, base } = Path.parse(providedPath)
@@ -66,7 +66,7 @@ module.exports = function routes(repo, log) {
             updateBranch,
             path,
             author,
-            fileContent
+            fileContent,
           )
         } else {
           throw new Error("Missing 'files' or 'fileContent'")
@@ -90,7 +90,7 @@ module.exports = function routes(repo, log) {
 
       log.info(
         { providedAuthor, ip, parentVersion, providedPath, updateBranch },
-        "Delete request received"
+        "Delete request received",
       )
 
       const { dir, base } = Path.parse(providedPath)
@@ -107,7 +107,7 @@ module.exports = function routes(repo, log) {
             updateBranch,
             path,
             author,
-            directory
+            directory,
           )
         } else {
           throw new Error("Missing 'file' or 'directory'")
