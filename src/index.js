@@ -7,6 +7,24 @@ const Repo = require("./repo")
 const routes = require("./routes")
 const log = createLogger()
 
+let server
+
+const gracefulShutdown = () => {
+  log.info("Received shutdown signal")
+  if (server) {
+    log.info("Closing server")
+    server.close(() => {
+      log.info("Server closed")
+      process.exit(0)
+    })
+  } else {
+    process.exit(0)
+  }
+}
+
+process.on("SIGINT", gracefulShutdown)
+process.on("SIGTERM", gracefulShutdown)
+
 async function main() {
   const app = express()
   app.use(compression())
@@ -35,9 +53,12 @@ async function main() {
   app.set("trust proxy", true)
   app.use("/", routes(repo, log))
 
-  app.listen(port, () => {
+  server = app.listen(port, () => {
     log.info("Up and running", { port })
   })
 }
 
-main()
+main().catch((error) => {
+  log.error({ error }, "Failed to start server")
+  process.exit(1)
+})
